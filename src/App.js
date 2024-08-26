@@ -1,5 +1,6 @@
 import './App.css';
 import freeCodeCampLogo from './imagenes/freecodecamp-logo.png'
+import Logo from './componentes/Logo'
 import Boton from './componentes/Boton'
 import Pantalla from './componentes/Pantalla'
 import BotonClear from './componentes/BotonClear'
@@ -9,9 +10,18 @@ import { evaluate, log } from 'mathjs';
 function App() {
 
   const [input, setInput] = useState('');
-   
-  const agregarInput = val => {
-    setInput(input + val);
+
+  const esOperador = val => {
+    return isNaN(val) && val !== '.' && val !== '=';
+  };  
+
+  const agregarInput = val=> {
+    if (
+      !esOperador(val) || 
+      (esOperador(val) && !esOperador(input[input.length - 1]))
+    ) {
+      setInput(input + val);
+    }
   };
 
   const calcularResultado = () => {
@@ -20,17 +30,14 @@ function App() {
     } else {
       alert("Ingresa valores para realizar los calculos")
     }
-  }
+  };
 
   return (
     <div className="App">
-      <div className='freecodecamp-logo-contenedor'>
-        <img 
-          src={freeCodeCampLogo}
-          className='freecodecamp-logo'
-          alt='Logo de freeCodeCamp'
-        />
-      </div>
+      <Logo 
+        src={freeCodeCampLogo}
+        alt={'Logo de freeCodeCamp'}
+      />
       <div className='contenedor-calculadora'>
       <Pantalla input={input}/>
         <div className='fila'>
